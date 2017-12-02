@@ -125,5 +125,6 @@ public class DialogBox : MonoBehaviour
         if (clicked)
             yield return new WaitForSeconds(1f);
         ContinueButton.interactable = true;
+        ContinueButton.Select();
     }
 }

@@ -4,47 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-public class AddNewGuitarist : MonoBehaviour {
+public class AddNewGuitarist : MonoBehaviour
+{
 
     public Button SubmitButton { get; private set; }
     public InputField inputField { get; private set; }
 
+    public SpawnSpots spawns;
+
+
     void Awake()
     {
-        var addNew = GameObject.Find("AddNew");
 
-
-        SubmitButton = addNew.GetComponentInChildren<Button>();
-        inputField = addNew.GetComponentInChildren<InputField>();
-
+        SubmitButton = GetComponentInChildren<Button>();
+        inputField = GetComponentInChildren<InputField>();
         SubmitButton.onClick.AddListener(OnInputSubmit);
 
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
-
     void OnInputSubmit()
-    {        
+    {
         if (!Global.Paused && inputField.text != "")
         {
             if (char.IsLetter(inputField.text[0]))
             {
                 inputField.text = inputField.text.ToUpper();
+                inputField.interactable = false;
+                SubmitButton.interactable = false;
                 var letter = inputField.text[0];
-                if (CheckIfLetterExists(letter))
-                {
-                    Global.CallDialog("This letter is already taken");
-                }
-                else
-                {
-                    var name = GetGuitaristsName(letter);
-                    GameManager.Instance.GuitaristNames.Add(name);
-                    GameManager.Instance.GuitaristLetters.Add(name[0]);
-                    Global.CallDialog("Added " + name);
-                }
+                AddGuitarist(letter);
             }
         }
     }
@@ -54,7 +42,7 @@ public class AddNewGuitarist : MonoBehaviour {
         // Create Name Generator
         var list = GameManager.Instance.allNames;
         var l = list.Where(kvp => kvp.Key == c);
-        var rand = Random.Range(0, l.Count()-1);
+        var rand = Random.Range(0, l.Count());
         return l.ElementAt(rand).Value;
     }
 
@@ -62,4 +50,58 @@ public class AddNewGuitarist : MonoBehaviour {
     {
         return GameManager.Instance.GuitaristLetters.Contains(c);
     }
+
+    public void AddGuitarist(char letter)
+    {
+        if (CheckIfLetterExists(letter))
+        {
+            Global.CallDialog("This letter is already taken!");
+            StartCoroutine(WaitForOKAfterWrong());
+        }
+        else
+        {
+            var name = GetGuitaristsName(letter);
+            GameManager.Instance.GuitaristNames.Add(name);
+            GameManager.Instance.SM.NameGuitarist(name);
+            GameManager.Instance.GuitaristLetters.Add(name[0]);
+            Global.CallDialog("Added " + name);
+            StartCoroutine(WaitForOK());
+        }
+        inputField.text = "";
+
+    }
+
+    IEnumerator WaitForOKAfterWrong()
+    {
+        while (Global.Paused)
+            yield return true;
+
+        inputField.interactable = true;
+        inputField.ActivateInputField();
+        SubmitButton.interactable = true;
+    }
+
+    IEnumerator WaitForOK()
+    {
+
+        while (Global.Paused)
+        {
+            yield return true;
+
+        }
+
+        var guits = GameManager.Instance.SM.guitarists;
+        var spawn = spawns.TalkingSpots[guits.Count - 1];
+        var trans = guits[guits.Count - 1].GO.transform;
+        trans.parent = spawn;
+        trans.position = spawn.position;
+        trans.GetComponentInChildren<CostumeEditor>().transform.localScale = new Vector3(trans.localScale.x == -1 ? -1 : 1, 1, 1);
+
+        if (guits.Count != GameManager.Instance.numGuitars)
+            GameManager.Instance.CreateNextGuitarist();
+        else
+            GameManager.Instance.BandReady();
+    }
+
+
 }

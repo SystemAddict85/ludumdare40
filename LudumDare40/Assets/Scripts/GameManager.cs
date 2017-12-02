@@ -6,8 +6,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public static GameManager Instance = null;
-    
+
+    [HideInInspector]
     public List<string> GuitaristNames = new List<string>();
+    [HideInInspector]
     public List<char> GuitaristLetters = new List<char>();
 
     public int numGuitars = 2;
@@ -18,14 +20,17 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private TextAsset nameFile;
     [HideInInspector]
-    public List<KeyValuePair<char,string>> allNames = new List<KeyValuePair<char,string>>();
-
+    public List<KeyValuePair<char, string>> allNames = new List<KeyValuePair<char, string>>();
+    
     [HideInInspector]
     public UIManager UI;
     [HideInInspector]
     public AudioManager AM;
-        
-	void Awake () {
+    [HideInInspector]
+    public SpriteManager SM;
+
+    #region Initialization
+    void Awake () {
 		
         if(Instance == null)
         {
@@ -36,11 +41,13 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);  
 
         GetManagers();
-        InitializeGuitars();
-        ParseTextNames();
+        if(allNames.Count == 0)
+            ParseTextNames();
+
+        StartCoroutine(StartGame());
         
 	}
 
@@ -48,6 +55,7 @@ public class GameManager : MonoBehaviour {
     {
         UI = GetComponentInChildren<UIManager>();
         AM = GetComponentInChildren<AudioManager>();
+        SM = GetComponentInChildren<SpriteManager>();
     }
 
     void ParseTextNames()
@@ -67,15 +75,45 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    void Update()
+    IEnumerator StartGame()
     {
-        if(isChoosingName){
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(CreateGuitarist());
+    }
+    #endregion    
 
-        }
+    #region Creation
+    public IEnumerator CreateGuitarist()
+    {        
+        var guit = SM.AddGuitarist();
+        guit.GO.transform.position = UI.addNew.spawns.NameSpot.position;
+        yield return new WaitForSeconds(.2f);
+        Global.CallDialog("Please enter a letter for the new guitarist.");
+        StartCoroutine(WaitForOk());
     }
 
-    void InitializeGuitars()
+    IEnumerator WaitForOk()
     {
+        yield return new WaitForSeconds(.4f);
+        UI.addNew.gameObject.SetActive(true);
+        while (Global.Paused)
+            yield return true;
+        UI.addNew.SubmitButton.interactable = true;
+        UI.addNew.inputField.interactable = true;
+        UI.addNew.inputField.ActivateInputField();
+    }
 
-    }    
+    public void CreateNextGuitarist()
+    {        
+        StartCoroutine(CreateGuitarist());
+    }
+    #endregion
+
+    public void BandReady()
+    {
+        UI.addNew.gameObject.SetActive(false);
+        Debug.Log("Band Ready");
+    }
+
+    
 }
