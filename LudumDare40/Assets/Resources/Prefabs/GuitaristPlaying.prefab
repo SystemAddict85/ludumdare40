@@ -19,6 +19,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4189168520454104}
+  - component: {fileID: 114693790839370292}
+  - component: {fileID: 50113834749190966}
+  - component: {fileID: 61700433480127668}
   m_Layer: 0
   m_Name: GuitaristPlaying
   m_TagString: Untagged
@@ -36,7 +39,6 @@ GameObject:
   - component: {fileID: 4419855470305658}
   - component: {fileID: 212154951362383280}
   - component: {fileID: 95557687408541072}
-  - component: {fileID: 61733754863335456}
   m_Layer: 0
   m_Name: base
   m_TagString: Untagged
@@ -60,7 +62,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1730861504381402
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,30 +232,50 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!61 &61733754863335456
+--- !u!50 &50113834749190966
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1422570042323464}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!61 &61700433480127668
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1558395392322784}
+  m_GameObject: {fileID: 1422570042323464}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.049043715, y: -0.28534564}
+  m_Offset: {x: 0.035615444, y: -0.26965976}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 0.32, y: 0.32}
-    adaptiveTilingThreshold: 0.5
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.38472283, y: 0.32230347}
+  m_Size: {x: 0.44032884, y: 0.46068048}
   m_EdgeRadius: 0
 --- !u!95 &95557687408541072
 Animator:
@@ -349,6 +371,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab527d3fb4aa4a2489a014e2c4d68c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114693790839370292
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1422570042323464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3707679f87b90b4695a01bdc0c5a2aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 0.5
 --- !u!212 &212154951362383280
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -424,8 +458,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -931555349
-  m_SortingLayer: 1
+  m_SortingLayerID: -415028247
+  m_SortingLayer: 10
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: c11ff44f83317644698b52308725e5f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -468,8 +502,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -931555349
-  m_SortingLayer: 1
+  m_SortingLayerID: -415028247
+  m_SortingLayer: 10
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300008, guid: 8a2c741b2367e2841a60ad7de05a9596, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -512,8 +546,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -931555349
-  m_SortingLayer: 1
+  m_SortingLayerID: -415028247
+  m_SortingLayer: 10
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 456a02271a3a2784fbe4ced756124f1e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

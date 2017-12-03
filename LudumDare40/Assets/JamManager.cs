@@ -10,7 +10,7 @@ public class JamManager : MonoBehaviour {
     
 	// Use this for initialization
 	void Awake () {
-        var trans = GetComponentsInChildren<Transform>();
+        var trans = rehearsalStartingSpots.GetComponentsInChildren<Transform>();
         for (int i = 1; i < trans.Length; ++i)
             startLocations[i - 1] = trans[i];
         
@@ -19,6 +19,7 @@ public class JamManager : MonoBehaviour {
     public void SetupRound()
     {
         PlaceGuitarists();
+        StartGame();
     }
 
     void PlaceGuitarists()
@@ -27,8 +28,9 @@ public class JamManager : MonoBehaviour {
         foreach (var guit in activeGuits)
         {
             Destroy(guit.GO);
-            guit.GO = Instantiate(Resources.Load("Prefabs/GuitaristPlaying"), startLocations[i]) as GameObject;
+            guit.GO = Instantiate(Resources.Load("Prefabs/GuitaristPlaying")) as GameObject;
             guit.GO.transform.parent = startLocations[i];
+            guit.GO.transform.position = startLocations[i].position; 
             guit.ChangeGameObject();
             ++i;
         }
@@ -38,4 +40,9 @@ public class JamManager : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    void StartGame()
+    {
+        Global.isGameStarted = true;
+    }
 }

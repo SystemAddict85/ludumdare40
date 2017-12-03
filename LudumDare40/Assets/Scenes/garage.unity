@@ -1180,7 +1180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GuitaristNames: []
   GuitaristLetters: 
-  numGuitars: 2
+  numGuitars: 1
   nameFile: {fileID: 4900000, guid: b836ada8135ef034ab3519bb5822ff22, type: 3}
   UI: {fileID: 0}
   AM: {fileID: 0}

@@ -11,9 +11,39 @@ public class SpriteManager : MonoBehaviour
     CostumeCollection costumes;
     public Animator[] animators = new Animator[5];
 
+    private bool isSorting = false;
+
     void Awake()
     {
         costumes = GetComponent<CostumeCollection>();
+
+    }
+
+    void Update()
+    {
+        if (Global.isGameStarted && !isSorting)
+        {
+            isSorting = true;
+            StartCoroutine(WaitToSortLayers());
+        }
+    }
+    
+    IEnumerator WaitToSortLayers()
+    {
+        yield return new WaitForSeconds(.5f);
+        var guits = GameManager.Instance.JM.activeGuits;
+
+        var sortedList = guits.OrderBy(guit => guit.GO.transform.position.y).ToArray();
+        for (int i = 0; i < sortedList.Count(); ++i)
+        {
+            var rends = sortedList[i].GO.GetComponentsInChildren<SpriteRenderer>();
+            foreach(var r in rends)
+            {
+                r.sortingLayerName = "Guitarist" + (i + 1);
+            }
+        }
+
+        isSorting = false;
 
     }
 
@@ -105,5 +135,6 @@ public class Guitarist
     {
         GO.GetComponentInChildren<Animator>().runtimeAnimatorController = GameManager.Instance.SM.animators[GameManager.Instance.SM.GetComponent<CostumeCollection>().GuitaristCostumes.IndexOf(sprite)].runtimeAnimatorController;
         GO.GetComponentInChildren<GuitarEditor>().GetComponent<SpriteRenderer>().sprite = Guitar;
+        GO.GetComponentInChildren<TextMesh>().text = Name;
     }
 }

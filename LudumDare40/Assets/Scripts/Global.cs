@@ -7,6 +7,7 @@ using UnityEngine;
 public static class Global
 {
     public static bool Paused = false;
+    public static bool isGameStarted = false;
 
     public static void CallDialog(string text)
     {

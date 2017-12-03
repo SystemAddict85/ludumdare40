@@ -48,3 +48,27 @@ TagManager:
   - name: UI
     uniqueID: 1880218769
     locked: 0
+  - name: Guitarist8
+    uniqueID: 678090809
+    locked: 0
+  - name: Guitarist7
+    uniqueID: 999071957
+    locked: 0
+  - name: Guitarist6
+    uniqueID: 2455844339
+    locked: 0
+  - name: Guitarist5
+    uniqueID: 1490521831
+    locked: 0
+  - name: Guitarist4
+    uniqueID: 15872159
+    locked: 0
+  - name: Guitarist3
+    uniqueID: 2568596609
+    locked: 0
+  - name: Guitarist2
+    uniqueID: 3865491609
+    locked: 0
+  - name: Guitarist1
+    uniqueID: 3879939049
+    locked: 0
