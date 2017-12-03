@@ -9,6 +9,7 @@ public class SpriteManager : MonoBehaviour
     public List<Guitarist> guitarists = new List<Guitarist>();
 
     CostumeCollection costumes;
+    public Animator[] animators = new Animator[5];
 
     void Awake()
     {
@@ -20,7 +21,7 @@ public class SpriteManager : MonoBehaviour
     {
         var guitarist = new Guitarist();
         guitarist.GO = Instantiate(Resources.Load("Prefabs/Guitarist")) as GameObject;
-        guitarist.CasualSprite = costumes.GetRandomCostume();
+        guitarist.sprite = costumes.GetRandomCostume();
         guitarist.Stance = Guitarist.SpriteStance.CHAT;
         guitarists.Add(guitarist);
         return guitarist;
@@ -49,13 +50,11 @@ public class SpriteManager : MonoBehaviour
 public class Guitarist
 {
     public string Name { get; set; }
-    public Sprite CasualSprite { get; set; }
-    public Sprite JamSprite { get; set; }
-    public Sprite GoodRiffSprite { get; set; }
-    public Sprite BadRiffSprite { get; set; }
+    public Sprite sprite { get; set; }
     public AudioClip goodRiff { get; set; }
     public AudioClip badRiff { get; set; }
     public GameObject GO { get; set; }
+    public Sprite Guitar { get; set; }
     public int ID { get; private set; }
 
     public enum SpriteStance { CHAT, JAM, BAD, GOOD };
@@ -69,7 +68,7 @@ public class Guitarist
         }
         set
         {
-            GO.GetComponentInChildren<CostumeEditor>().ChangeCostume(ChangeSpriteStance());
+            GO.GetComponentInChildren<CostumeEditor>().ChangeCostume(sprite);
             if (value == SpriteStance.BAD)
             {
                 AudioManager.PlaySFX(badRiff, 1f);
@@ -86,6 +85,10 @@ public class Guitarist
     public Guitarist()
     {
         ID = GameManager.Instance.SM.guitarists.Count;
+        var guitar = GameManager.Instance.SM.GetComponent<GuitarCollection>();
+        Guitar = guitar.GetRandomGuitar();
+        var riffs = GameManager.Instance.AM.GetComponent<RiffCollection>().RiffClips;
+        goodRiff = riffs[guitar.GuitarSprites.IndexOf(Guitar)];
     }
 
     public void ChangeNameTagDisplay(bool isShowing)
@@ -95,25 +98,12 @@ public class Guitarist
 
     public Sprite ChangeSpriteStance()
     {
-        var sprite = CasualSprite;
-
-        switch (stance)
-        {
-            case SpriteStance.BAD:
-                sprite = BadRiffSprite;
-                break;
-            case SpriteStance.JAM:
-                sprite = JamSprite;
-                break;
-            case SpriteStance.GOOD:
-                sprite = GoodRiffSprite;
-                break;
-            case SpriteStance.CHAT:
-            default:
-                sprite = CasualSprite;
-                break;
-        }
-
         return sprite;
+    }
+
+    public void ChangeGameObject()
+    {
+        GO.GetComponentInChildren<Animator>().runtimeAnimatorController = GameManager.Instance.SM.animators[GameManager.Instance.SM.GetComponent<CostumeCollection>().GuitaristCostumes.IndexOf(sprite)].runtimeAnimatorController;
+        GO.GetComponentInChildren<GuitarEditor>().GetComponent<SpriteRenderer>().sprite = Guitar;
     }
 }

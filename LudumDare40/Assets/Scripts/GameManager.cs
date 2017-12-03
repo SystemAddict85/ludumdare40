@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour {
     public AudioManager AM;
     [HideInInspector]
     public SpriteManager SM;
+    [HideInInspector]
+    public JamManager JM;
 
     #region Initialization
     void Awake () {
@@ -56,6 +58,7 @@ public class GameManager : MonoBehaviour {
         UI = GetComponentInChildren<UIManager>();
         AM = GetComponentInChildren<AudioManager>();
         SM = GetComponentInChildren<SpriteManager>();
+        JM = GetComponentInChildren<JamManager>(true);
     }
 
     void ParseTextNames()
@@ -112,6 +115,8 @@ public class GameManager : MonoBehaviour {
     public void BandReady()
     {
         UI.addNew.gameObject.SetActive(false);
+        JM.activeGuits = SM.guitarists;
+        JM.SetupRound();
         Debug.Log("Band Ready");
     }
 
