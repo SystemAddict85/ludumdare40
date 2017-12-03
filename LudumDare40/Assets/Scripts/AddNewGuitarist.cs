@@ -7,7 +7,6 @@ using System.Linq;
 public class AddNewGuitarist : MonoBehaviour
 {
 
-    public Button SubmitButton { get; private set; }
     public InputField inputField { get; private set; }
 
     public SpawnSpots spawns;
@@ -15,22 +14,18 @@ public class AddNewGuitarist : MonoBehaviour
 
     void Awake()
     {
-
-        SubmitButton = GetComponentInChildren<Button>();
         inputField = GetComponentInChildren<InputField>();
-        SubmitButton.onClick.AddListener(OnInputSubmit);
 
     }
 
-    void OnInputSubmit()
+    public void OnInputSubmit()
     {
-        if (!Global.Paused && inputField.text != "")
+        if (!Global.Paused && inputField.text != "" && Input.GetKey(KeyCode.Return))
         {
             if (char.IsLetter(inputField.text[0]))
             {
                 inputField.text = inputField.text.ToUpper();
-                inputField.interactable = false;
-                SubmitButton.interactable = false;
+                inputField.interactable = false;                
                 var letter = inputField.text[0];
                 AddGuitarist(letter);
             }
@@ -77,8 +72,7 @@ public class AddNewGuitarist : MonoBehaviour
             yield return true;
 
         inputField.interactable = true;
-        inputField.ActivateInputField();
-        SubmitButton.interactable = true;
+        inputField.ActivateInputField();        
     }
 
     IEnumerator WaitForOK()

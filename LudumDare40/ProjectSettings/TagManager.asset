@@ -45,9 +45,6 @@ TagManager:
   - name: Player
     uniqueID: 3363411947
     locked: 0
-  - name: UI
-    uniqueID: 1880218769
-    locked: 0
   - name: Guitarist8
     uniqueID: 678090809
     locked: 0
@@ -71,4 +68,7 @@ TagManager:
     locked: 0
   - name: Guitarist1
     uniqueID: 3879939049
+    locked: 0
+  - name: UI
+    uniqueID: 1880218769
     locked: 0

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -13,10 +14,9 @@ public class GameManager : MonoBehaviour {
     public List<char> GuitaristLetters = new List<char>();
 
     public int numGuitars = 2;
-    private int currentGuitarist = 1;
-
-    private bool isChoosingName = false;
-
+    [Range(1f, 10f)]
+    public float goodRiffThreshold = 1f;
+    
     [SerializeField]
     private TextAsset nameFile;
     [HideInInspector]
@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour {
     public SpriteManager SM;
     [HideInInspector]
     public JamManager JM;
+    [HideInInspector]
+    public CameraManager CM;
 
     #region Initialization
     void Awake () {
@@ -59,6 +61,7 @@ public class GameManager : MonoBehaviour {
         AM = GetComponentInChildren<AudioManager>();
         SM = GetComponentInChildren<SpriteManager>();
         JM = GetComponentInChildren<JamManager>(true);
+        CM = GetComponentInChildren<CameraManager>();
     }
 
     void ParseTextNames()
@@ -91,19 +94,20 @@ public class GameManager : MonoBehaviour {
         var guit = SM.AddGuitarist();
         guit.GO.transform.position = UI.addNew.spawns.NameSpot.position;
         yield return new WaitForSeconds(.2f);
-        Global.CallDialog("Please enter a letter for the new guitarist.");
+        Global.CallDialog("Enter a letter for the first name of your new guitarist. Then press enter.");
         StartCoroutine(WaitForOk());
     }
 
     IEnumerator WaitForOk()
     {
         yield return new WaitForSeconds(.4f);
-        UI.addNew.gameObject.SetActive(true);
+
         while (Global.Paused)
             yield return true;
-        UI.addNew.SubmitButton.interactable = true;
-        UI.addNew.inputField.interactable = true;
-        UI.addNew.inputField.ActivateInputField();
+
+        UI.addNew.gameObject.SetActive(true);
+        UI.addNew.GetComponentInChildren<InputField>().interactable = true;
+        UI.addNew.GetComponentInChildren<InputField>().ActivateInputField();
     }
 
     public void CreateNextGuitarist()
