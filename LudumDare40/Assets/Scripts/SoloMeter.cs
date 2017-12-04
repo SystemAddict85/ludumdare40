@@ -35,10 +35,10 @@ public class SoloMeter : MonoBehaviour
 
     private void GetPlayerInput()
     {
-        if (Input.GetKeyDown(soloKey))
+        if (Input.inputString.Length != 0)
         {
             hasPressed = true;
-            if (IsGoodTime())
+            if (Input.GetKey(soloKey) && IsGoodTime())
             {
                 GoodPress();
             }
@@ -55,6 +55,7 @@ public class SoloMeter : MonoBehaviour
         var worldShader = GameManager.Instance.UI.worldShader;
         StartCoroutine(worldShader.FlashColor(worldShader.failColor));
         GameManager.Instance.JM.BadScore();
+        AudioManager.PlaySFX(GameManager.Instance.BadNote, .5f);
     }
     private void GoodPress()
     {
@@ -63,10 +64,10 @@ public class SoloMeter : MonoBehaviour
         var worldShader = GameManager.Instance.UI.worldShader;
         StartCoroutine(worldShader.FlashColor(worldShader.nailedItColor));
         GameManager.Instance.JM.GoodScore();
+        AudioManager.PlaySFX(soloGuitarist.goodRiff, 1f);
     }
     private bool IsGoodTime()
     {        
-        Debug.Log((currentTime / playTime).ToString() + '\n' + goodTime.ToString());
         if (currentTime / playTime >= goodTime)
         {
             return true;

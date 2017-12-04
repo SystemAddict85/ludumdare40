@@ -25,7 +25,8 @@ public class AddNewGuitarist : MonoBehaviour
             if (char.IsLetter(inputField.text[0]))
             {
                 inputField.text = inputField.text.ToUpper();
-                inputField.interactable = false;                
+                inputField.interactable = false;
+                inputField.GetComponent<Image>().enabled = false;
                 var letter = inputField.text[0];
                 AddGuitarist(letter);
             }
@@ -71,8 +72,9 @@ public class AddNewGuitarist : MonoBehaviour
         while (Global.Paused)
             yield return true;
 
+        inputField.GetComponent<Image>().enabled = true;
         inputField.interactable = true;
-        inputField.ActivateInputField();        
+        inputField.ActivateInputField();
     }
 
     IEnumerator WaitForOK()
@@ -83,18 +85,14 @@ public class AddNewGuitarist : MonoBehaviour
             yield return true;
 
         }
+        //var guits = GameManager.Instance.SM.guitarists;
+        //var spawn = spawns.TalkingSpots[guits.Count - 1];
+        //var trans = guits[guits.Count - 1].GO.transform;
+        //trans.parent = spawn;
+        //trans.position = spawn.position;
+        //trans.GetComponentInChildren<CostumeEditor>().transform.localScale = new Vector3(trans.localScale.x == -1 ? -1 : 1, 1, 1);
 
-        var guits = GameManager.Instance.SM.guitarists;
-        var spawn = spawns.TalkingSpots[guits.Count - 1];
-        var trans = guits[guits.Count - 1].GO.transform;
-        trans.parent = spawn;
-        trans.position = spawn.position;
-        trans.GetComponentInChildren<CostumeEditor>().transform.localScale = new Vector3(trans.localScale.x == -1 ? -1 : 1, 1, 1);
-
-        if (guits.Count != GameManager.Instance.numGuitars)
-            GameManager.Instance.CreateNextGuitarist();
-        else
-            GameManager.Instance.BandReady();
+        GameManager.Instance.BandReady();
     }
 
 

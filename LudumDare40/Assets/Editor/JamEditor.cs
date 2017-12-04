@@ -10,9 +10,13 @@ public class JamEditor : Editor {
     {
         base.OnInspectorGUI();
 
-        if(GUILayout.Button("Target Random"))
+        if(GUILayout.Button("Random Solo"))
         {
-            (target as GameManager).JM.GuitarSolo();
+            (target as GameManager).JM.GuitarSolo();            
+        }
+        if (GUILayout.Button("Add Guitarist"))
+        {
+            (target as GameManager).CreateNextGuitarist();
         }
     }
 }

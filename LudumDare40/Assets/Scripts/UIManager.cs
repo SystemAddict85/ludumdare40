@@ -27,6 +27,8 @@ public class UIManager : MonoBehaviour {
     public ScoreBoard score;
     [HideInInspector]
     public ScoreGrow addScore;
+    [HideInInspector]
+    public LifeBar lifeBar;
 
 
     void Awake()
@@ -43,6 +45,7 @@ public class UIManager : MonoBehaviour {
         worldShader = GetComponentInChildren<WorldShader>();
         score = GetComponentInChildren<ScoreBoard>();
         addScore = GetComponentInChildren<ScoreGrow>(true);
+        lifeBar = GetComponentInChildren<LifeBar>();
     }   
 
 }

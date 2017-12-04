@@ -5,6 +5,7 @@ public static class Global
 {
     public static bool Paused = false;
     public static bool isGameStarted = false;
+    public static int remainingLives = 3;
 
     public static void CallDialog(string text)
     {
@@ -30,6 +31,26 @@ public static class Global
         yield return new WaitForSeconds(1.25f);
         GameManager.Instance.UI.addScore.gameObject.SetActive(false);
         
+    }
+
+    public static void GameOver()
+    {
+        Debug.Log("game over");
+        remainingLives = 3;
+        isGameStarted = false;
+        Paused = false;
+        MonoBehaviour.Destroy(GameManager.Instance);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("gameover");
+    }
+
+    public static void LowerLife()
+    {
+        --remainingLives;
+        GameManager.Instance.UI.lifeBar.LowerLife();
+        if(remainingLives <= 0)
+        {
+            GameOver();
+        }
     }
     
 }

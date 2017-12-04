@@ -65,6 +65,7 @@ public class JamManager : MonoBehaviour {
         var riffLength = riff.length - riffClip;
         GameManager.Instance.UI.soloMeter.StartSoloMeter(guit, riffLength);
         StartCoroutine(ZoomSoloTime(riffLength));
+        
     }
 
     IEnumerator ZoomSoloTime(float timeToZoomOut)
@@ -78,6 +79,7 @@ public class JamManager : MonoBehaviour {
         cam.ChangeCameraMoving(false);
         Global.HideMessageBox();
         GameManager.Instance.UI.soloMeter.transform.parent.gameObject.SetActive(false);
+        GameManager.Instance.isSoloing = false;
     }
 
     public void GoodScore()
@@ -88,5 +90,6 @@ public class JamManager : MonoBehaviour {
     public void BadScore()
     {
         StartCoroutine(Global.ChangeScore(-1000));
+        Global.LowerLife();
     }
 }

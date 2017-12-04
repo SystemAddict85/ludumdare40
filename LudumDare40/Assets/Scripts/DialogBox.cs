@@ -57,7 +57,7 @@ public class DialogBox : MonoBehaviour
     IEnumerator WaitToContinue()
     {
         Hide();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.75f);
         Global.Paused = false;
     }
 
